@@ -41,13 +41,17 @@ def getParas(threadCount, col):
         temp += divison
 
     print(pieceValues)
+
+    # gerekli threadler buraya yuklenecek
+    threads = []
     
    
 
     for i in range(threadCount):
-        t = threading.Thread(target=compareOfCol, args=(pieceValues[i], selectedData, i, divison))
-        t.start()
-        t.join()
+        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], selectedData, i, divison)))
+    
+    for thread in threads:
+        thread.start()
         
 
         
