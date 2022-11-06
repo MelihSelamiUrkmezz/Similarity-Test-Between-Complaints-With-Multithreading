@@ -8,14 +8,16 @@ import threading
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareOfCol(indexArea, i, divison, *selectedCol):
-
+    
     selectedCol = list(selectedCol)
 
-    if len(selectedCol) == 1:
-        selectedCol = selectedCol[0]
+    print('Secilen Colonlar ', selectedCol)
+
+    
         
     for index in range(indexArea-divison, indexArea):
-        print(selectedCol.iloc[index])
+        
+        print(allData.iloc[index])
 
     # Karsilasitmra islemi kaldı Su an tek islem yapıyor
     
@@ -25,40 +27,45 @@ def compareOfCol(indexArea, i, divison, *selectedCol):
      
 
     
-def getParas(threadCount, *col):
-    
-    col = list(col)
+def setThreadIndex(threadCount, *params):
 
-    if len(col) == 1:
-        selectedData = allData[col[0]]
+    params = list(params)
+    
+    selectedData = allData
         
 
     divison = int(len(selectedData) / threadCount)
+    print('Divison : ',divison)
     pieceValues = []
     temp = divison
+    print('Temp. ',temp)
     while True:
         if temp > len(selectedData):
             break
         
         pieceValues.append(int(temp))
         temp += divison
+        print('Temp :', temp)
 
     
-
+    print(pieceValues)
     # gerekli threadler buraya yuklenecek
     threads = []
     
    
 
     for i in range(threadCount):
-        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], i, divison, selectedData,)))
+        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], i, divison, params,)))
     
     for thread in threads:
         thread.start()
         
 
         
-getParas(2,"Product")  
+setThreadIndex(4, "Product","Company")  
+
+
+
 
         
 
