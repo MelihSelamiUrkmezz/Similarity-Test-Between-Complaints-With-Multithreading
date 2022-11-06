@@ -11,20 +11,13 @@ def clean_text(text):
     tokenize_words=word_tokenize(text)
     without_stop_words=[]
     for word in tokenize_words:
-        if word not in stop_words:
+        if word.lower() not in stop_words:
             without_stop_words.append(word)
-
-    
-    for char in without_stop_words:
-        
-        if char in string.punctuation:
-            
-            without_stop_words.remove(char)  
-            
+     
     new_string="" 
-    
     for x in without_stop_words:
-        new_string+=x+" "
+        if ( x not in string.punctuation):
+            new_string+=x+" "
 
     return new_string
 
@@ -59,15 +52,14 @@ def read_write_data():
                 continue
             
             if(row[1]!='' and row[3]!='' and row[7]!='' and row[8]!='' and row[9]!='' and row[17]!=''):
-                
                 liste = list()
                 
                 liste.append(clean_text(row[1]))
                 liste.append(clean_text(row[3]))
                 liste.append(clean_text(row[7]))
-                liste.append(clean_text(row[8]))
-                liste.append(clean_text(row[9]))
-                liste.append(clean_text(row[17]))
+                liste.append(row[8])
+                liste.append(row[9])
+                liste.append(row[17])
                 writer.writerow(liste)
             
             count+=1    
