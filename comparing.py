@@ -5,31 +5,34 @@ import threading
 
 
 # get Data
-allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='latin1')
+allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
-def compareOfCol(indexArea, selectedData, i, divison):
+def compareOfCol(indexArea, i, divison, *selectedCol):
 
-   
-    
-    print(f"Merhba ben {i} 'inci threadim ve yazdıklarım bu sekild...")
+    selectedCol = list(selectedCol)
 
+    if len(selectedCol) == 1:
+        selectedCol = selectedCol[0]
+        
     for index in range(indexArea-divison, indexArea):
-        print("indexin degeri ",index)
-        print(selectedData.iloc[index])
+        print(selectedCol.iloc[index])
+
+    # Karsilasitmra islemi kaldı Su an tek islem yapıyor
     
-    print('--------------------------------------------------')
+    
 
     
      
 
-
-
-
     
-def getParas(threadCount, col):
-    # Meregava
+def getParas(threadCount, *col):
     
-    selectedData = allData[col]
+    col = list(col)
+
+    if len(col) == 1:
+        selectedData = allData[col[0]]
+        
+
     divison = int(len(selectedData) / threadCount)
     pieceValues = []
     temp = divison
@@ -40,7 +43,7 @@ def getParas(threadCount, col):
         pieceValues.append(int(temp))
         temp += divison
 
-    print(pieceValues)
+    
 
     # gerekli threadler buraya yuklenecek
     threads = []
@@ -48,26 +51,17 @@ def getParas(threadCount, col):
    
 
     for i in range(threadCount):
-        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], selectedData, i, divison)))
+        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], i, divison, selectedData,)))
     
     for thread in threads:
         thread.start()
         
 
         
-    
+getParas(2,"Product")  
 
         
-    
-    
 
-    
-
-    
-
-
-
-getParas(2,"Product")
 
 
 
