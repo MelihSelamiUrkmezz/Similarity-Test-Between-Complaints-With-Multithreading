@@ -27,6 +27,7 @@ def compareOfCol(indexArea, selectedData, i, divison):
 
     
 def getParas(threadCount, col):
+    # Meregava
     
     selectedData = allData[col]
     divison = int(len(selectedData) / threadCount)
