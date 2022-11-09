@@ -38,6 +38,7 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
     # tek stun gonderildiyse
     # stunun benzerlik oranı kontrol edilemli
     
+    # 1.seneryo
     if len(selectedCol) == 1:
         
         for i in range(indexArea-divison, indexArea):
@@ -60,6 +61,43 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
                     print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}')
 
                     # karsılastırma algoritmas
+
+    # 2.seneryo
+    elif len(selectedCol) ==3:
+
+        for i in range(indexArea-divison, indexArea):
+            print('*'*100)
+            # mesele productı aynı olanlar diyor ya
+
+            # ordaki şarttaki kontrol degeri
+
+            # Performans acısında basta maine aldım her seyi parcalama islemini onun uzerinde yaptım
+            mainData = allData.iloc[i]
+            ifForRootData = mainData[selectedCol[0]]
+            rootData = mainData[selectedCol[1]]
+            pieceOfRooData = rootData.strip().split(' ')
+            
+            # str
+
+            for j in range(len(allData)):
+
+                # burada aynı urun icin bakmasın diye
+                if i != j:
+                    testData = allData.iloc[j]
+                    ifForTargetData = testData[selectedCol[0]]
+                    if ifForTargetData == ifForRootData:
+                        # algoritma gelecek
+                        targetData = testData[selectedCol[1]]
+                        pieceOfTargetData = targetData.strip().split(' ')
+                        valueTargetData = testData[selectedCol[2]]
+
+                        rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
+
+                        print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}  Company = {valueTargetData}')
+
+                    # karsılastırma algoritmas
+
+
     
     print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
                     
@@ -120,7 +158,7 @@ def setThreadIndex(threadCount, *params):
         
 
    
-setThreadIndex(3, "Product")  
+setThreadIndex(2, "Product", "Issue", "Company")  
 
 
 
