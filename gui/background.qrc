@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>Github/Similarity-Test-Between-Complaints-With-Multithreading/Images/background2.jpg</file>
+    <file>ui-ux-modernization-hero.png</file>
+  </qresource>
+</RCC>
