@@ -8,6 +8,7 @@ import time
 # get Data
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 allData=allData.head(100)
+# allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareAlgorithm(pieceRoot, pieceTarget):
 
@@ -30,6 +31,7 @@ def compareAlgorithm(pieceRoot, pieceTarget):
     return result
 
 def compareOfCol(indexArea, sayi, divison, *selectedCol):
+    process = True
     start_time = time.time()
     selectedCol = list(selectedCol)[0]
 
@@ -38,10 +40,57 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
     
     # tek stun gonderildiyse
     # stunun benzerlik oranı kontrol edilemli
+
+    for item in selectedCol:
+        if type(item) == int:
+            process = False
+            for i in range(indexArea-divison, indexArea):
+                print('*'*100)
+                # mesele productı aynı olanlar diyor ya
+
+                # ordaki şarttaki kontrol degeri
+
+                # Performans acısında basta maine aldım her seyi parcalama islemini onun uzerinde yaptım
+                mainData = allData.iloc[i]
+                ifForRootData = mainData[selectedCol[0]]
+                rootData = mainData[selectedCol[2]]
+                pieceOfRooData = rootData.strip().split(' ')
+
+                # ise idsi esit degilse
+                
+                if ifForRootData != selectedCol[1]:
+                    continue
+                
+                # str
+
+                for j in range(len(allData)):
+
+                    # burada aynı urun icin bakmasın diye
+                    if i != j:
+                        
+                        testData = allData.iloc[j]
+                        
+                        
+                        # algoritma gelecek
+                        targetData = testData[selectedCol[2]]
+                        pieceOfTargetData = targetData.strip().split(' ')
+                        valueTargetData = testData[selectedCol[2]]
+
+                        rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
+                        
+                        print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}  Company = {valueTargetData}')
+
+                        # karsılastırma algoritmas
+
+
+    
+        print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
+
+            
     
     # 1.seneryo
-    if len(selectedCol) == 1:
-        
+    if len(selectedCol) == 1 and process:
+        process = False
         for i in range(indexArea-divison, indexArea):
             print('*'*100)
             rootData = allData[selectedCol[0]].iloc[i]
@@ -64,8 +113,8 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
                     # karsılastırma algoritmas
 
     # 2.seneryo
-    elif len(selectedCol) ==3:
-
+    elif len(selectedCol) ==3 and process:
+        process = False
         for i in range(indexArea-divison, indexArea):
             print('*'*100)
             # mesele productı aynı olanlar diyor ya
@@ -100,27 +149,8 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
 
 
     
-    print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
-                    
-
-
-
-
-
-    
-        
-    # for index in range(indexArea-divison, indexArea):
-        
-    #     print(allData.iloc[index])
-
-    # Karsilasitmra islemi kaldı Su an tek islem yapıyor
-    
-    
-
-    
-     
-
-    
+        print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
+                      
 def setThreadIndex(threadCount, *params):
 
     params = list(params)
@@ -159,7 +189,7 @@ def setThreadIndex(threadCount, *params):
         
 
    
-setThreadIndex(2, "Product")  
+setThreadIndex(1, "Complaint ID",3238275,"Issue")  
 
 
 
