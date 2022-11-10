@@ -6,7 +6,8 @@ import time
 
 
 # get Data
-allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
+allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
+allData=allData.head(100)
 
 def compareAlgorithm(pieceRoot, pieceTarget):
 
@@ -21,7 +22,7 @@ def compareAlgorithm(pieceRoot, pieceTarget):
 
         for targetItem in pieceTarget:
             
-            if rootItem == targetItem:
+            if rootItem.strip().lower() == targetItem.strip().lower():
                 sameCount = sameCount + 1 
     
     result = (sameCount / maxLength) * 100
@@ -44,7 +45,7 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
         for i in range(indexArea-divison, indexArea):
             print('*'*100)
             rootData = allData[selectedCol[0]].iloc[i]
-            pieceOfRooData = rootData.split(' ')
+            pieceOfRooData = rootData.strip().split(' ')
             
             # str
 
@@ -54,7 +55,7 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
                 if i != j:
                     # algoritma gelecek
                     targetData = allData[selectedCol[0]].iloc[j]
-                    pieceOfTargetData = targetData.split(' ')
+                    pieceOfTargetData = targetData.strip().split(' ')
 
                     rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
 
@@ -158,7 +159,7 @@ def setThreadIndex(threadCount, *params):
         
 
    
-setThreadIndex(2, "Product", "Issue", "Company")  
+setThreadIndex(2, "Product")  
 
 
 
