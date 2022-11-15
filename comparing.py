@@ -1,6 +1,7 @@
 import pandas as pd
 import threading
 import time
+import multiprocessing as mp
 
 # kodun yazılacagı yer
 
@@ -151,7 +152,7 @@ def compareOfCol(indexArea, sayi, divison, *selectedCol):
     
         print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
                       
-def setThreadIndex(threadCount, *params):
+def setProcessIndex(threadCount, *params):
 
     params = list(params)
     
@@ -174,22 +175,22 @@ def setThreadIndex(threadCount, *params):
     
     
     # gerekli threadler buraya yuklenecek
-    threads = []
+    processes = []
     
    
 
     for i in range(threadCount):
-        threads.append(threading.Thread(target=compareOfCol, args=(pieceValues[i], i, divison, params,)))
+        processes.append(mp.Process(target=compareOfCol, args=(pieceValues[i], i, divison, params,)))
     
-    for thread in threads:
+    for process in processes:
         
-        thread.start()
+        process.start()
         
         
         
 
-   
-setThreadIndex(1, "Complaint ID",3238275,"Issue")  
+if __name__ == "__main__": 
+    setProcessIndex(1, "Complaint ID",3238275,"Issue")  
 
 
 
