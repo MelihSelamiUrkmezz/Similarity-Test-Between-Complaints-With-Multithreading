@@ -28,133 +28,78 @@ def compareAlgorithm(pieceRoot, pieceTarget):
                 sameCount = sameCount + 1 
     
     result = (sameCount / maxLength) * 100
-
+    if result > 100:
+        result = 100
     return result
 
-def compareOfCol(indexArea, sayi, divison, *selectedCol):
-    process = True
-    start_time = time.time()
-    selectedCol = list(selectedCol)[0]
-
-    print('Secilen Colonlar ', selectedCol)
-
+def compareOfCol(indexArea, sayi, divison, list1,list2,list3):
+    complaintId = ""
+    spesifik = ""
+    if list1[0] != "nothing":
+        if len(list1)>1:
+            complaintId = list1[1].strip()
+        spesifik = list1[0].strip().split(' ')[1]
     
-    # tek stun gonderildiyse
-    # stunun benzerlik oranı kontrol edilemli
+    rootCompareDatas = list2
+    showingCompareDatas = list3
 
-    for item in selectedCol:
-        if type(item) == int:
-            process = False
-            for i in range(indexArea-divison, indexArea):
-                print('*'*100)
-                # mesele productı aynı olanlar diyor ya
+    # complaint Id olan özel Durum
+    if len(complaintId)!=0:
 
-                # ordaki şarttaki kontrol degeri
+        for i in range(indexArea-divison, indexArea):
 
-                # Performans acısında basta maine aldım her seyi parcalama islemini onun uzerinde yaptım
-                mainData = allData.iloc[i]
-                ifForRootData = mainData[selectedCol[0]]
-                rootData = mainData[selectedCol[2]]
-                pieceOfRooData = rootData.strip().split(' ')
+            mainData = allData.iloc[i]
+            
+            if mainData["Complaint ID"].strip() == complaintId.strip():
 
-                # ise idsi esit degilse
-                
-                if ifForRootData != selectedCol[1]:
-                    continue
-                
-                # str
+                for item in rootCompareDatas:
+                    rootData = mainData[item]
+                    pieceOfRootData = rootData.strip().split(' ')
+
+                    for j in range(len(allData)):
+                        
+                        if i!=j:
+                            testData = allData.iloc[j]
+                            targetData = testData[item]
+                            pieceOfTargetData = targetData.strip().split(' ')
+                            
+                            rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
+
+                            for show in showingCompareDatas:
+                                showData = testData[show]
+                                print(f"RootData : {rootData} | TargetData: {targetData} | Rate:{rate} | ShowData {showData}")
+                                print('-'*100)
+
+    # genel Durum
+    else:
+        for i in range(indexArea-divison, indexArea):
+            mainData = allData.iloc[i]
+
+            for item in rootCompareDatas:
+                rootData = mainData[item]
+                pieceOfRootData = rootData.strip().split(' ')
 
                 for j in range(len(allData)):
 
-                    # burada aynı urun icin bakmasın diye
-                    if i != j:
-                        
+                    if j!=i:
                         testData = allData.iloc[j]
+
+                        if len(spesifik)>0:
+                            if mainData[spesifik].strip() == testData[spesifik].strip():
+                                targetData = testData[item]
+                                pieceOfTargetData = targetData.strip().split(' ')
+                                rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
+                        else:
+                            targetData = testData[item]
+                            pieceOfTargetData = targetData.strip().split(' ')
+                            rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                         
-                        
-                        # algoritma gelecek
-                        targetData = testData[selectedCol[2]]
-                        pieceOfTargetData = targetData.strip().split(' ')
-                        valueTargetData = testData[selectedCol[2]]
-
-                        rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
-                        
-                        print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}  Company = {valueTargetData}')
-
-                        # karsılastırma algoritmas
-
-
-    
-        print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
-
-            
-    
-    # 1.seneryo
-    if len(selectedCol) == 1 and process:
-        process = False
-        for i in range(indexArea-divison, indexArea):
-            print('*'*100)
-            rootData = allData[selectedCol[0]].iloc[i]
-            pieceOfRooData = rootData.strip().split(' ')
-            
-            # str
-
-            for j in range(len(allData)):
-
-                # burada aynı urun icin bakmasın diye
-                if i != j:
-                    # algoritma gelecek
-                    targetData = allData[selectedCol[0]].iloc[j]
-                    pieceOfTargetData = targetData.strip().split(' ')
-
-                    rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
-
-                    print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}')
-
-                    # karsılastırma algoritmas
-
-    # 2.seneryo
-    elif len(selectedCol) ==3 and process:
-        process = False
-        for i in range(indexArea-divison, indexArea):
-            print('*'*100)
-            # mesele productı aynı olanlar diyor ya
-
-            # ordaki şarttaki kontrol degeri
-
-            # Performans acısında basta maine aldım her seyi parcalama islemini onun uzerinde yaptım
-            mainData = allData.iloc[i]
-            ifForRootData = mainData[selectedCol[0]]
-            rootData = mainData[selectedCol[1]]
-            pieceOfRooData = rootData.strip().split(' ')
-            
-            # str
-
-            for j in range(len(allData)):
-
-                # burada aynı urun icin bakmasın diye
-                if i != j:
-                    testData = allData.iloc[j]
-                    ifForTargetData = testData[selectedCol[0]]
-                    if ifForTargetData == ifForRootData:
-                        # algoritma gelecek
-                        targetData = testData[selectedCol[1]]
-                        pieceOfTargetData = targetData.strip().split(' ')
-                        valueTargetData = testData[selectedCol[2]]
-
-                        rate = compareAlgorithm(pieceRoot=pieceOfRooData, pieceTarget=pieceOfTargetData)
-
-                        print(f'Ben {sayi} numaralı Thredim --- Root Data = {rootData}  Target Data = {targetData}  Rate = %{rate}  Company = {valueTargetData}')
-
-                    # karsılastırma algoritmas
-
-
-    
-        print(f"--- {(time.time() - start_time)} seconds --- Ben {sayi} numaralı thredim")
-                      
-def setProcessIndex(threadCount, *params):
-
-    params = list(params)
+                        for show in showingCompareDatas:
+                                showData = testData[show]
+                                print(f"RootData : {rootData} | TargetData: {targetData} | Rate:{rate} | ShowData: {showData}")
+                                print('-'*100)
+                     
+def setProcessIndex(threadCount, list1, list2, list3):
     
     selectedData = allData
         
@@ -170,27 +115,23 @@ def setProcessIndex(threadCount, *params):
         
         pieceValues.append(int(temp))
         temp += divison
-        
-
-    
-    
+          
     # gerekli threadler buraya yuklenecek
     processes = []
     
-   
 
     for i in range(threadCount):
-        processes.append(mp.Process(target=compareOfCol, args=(pieceValues[i], i, divison, params,)))
+        processes.append(mp.Process(target=compareOfCol, args=(pieceValues[i], i, divison, list1,list2,list3,)))
     
     for process in processes:
         
         process.start()
         
-        
+
         
 
 if __name__ == "__main__": 
-    setProcessIndex(1, "Complaint ID",3238275,"Issue")  
+    setProcessIndex(4, ['Aynı Product'],['Issue','Product'],['Company'])  
 
 
 
