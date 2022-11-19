@@ -9,7 +9,7 @@ import multiprocessing as mp
 # get Data
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 
-allData=allData.head(400)
+allData=allData.head(800)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareAlgorithm(pieceRoot, pieceTarget):
@@ -397,7 +397,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
 
 if __name__ == "__main__": 
     #setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
-    setUltimateProcessIndex(26, ['Aynı Product'],['Issue'],['Company'],20)
+    setUltimateProcessIndex(40, ['Aynı Product'],['Issue','Company'],['Company'],20)
     
 
 
