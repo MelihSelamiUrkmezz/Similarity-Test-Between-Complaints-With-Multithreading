@@ -9,7 +9,7 @@ import multiprocessing as mp
 # get Data
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 
-allData=allData.head(800)
+allData=allData.head(50)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareAlgorithm(pieceRoot, pieceTarget):
@@ -34,6 +34,7 @@ def compareAlgorithm(pieceRoot, pieceTarget):
     return result
 
 def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
+    karsilatirma = 0
     complaintId = ""
     spesifik = ""
     if list1[0] != "nothing":
@@ -93,6 +94,7 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
     # genel Durum
     else:
         for i in range(indexArea-divison, indexArea):
+            karsilatirma = karsilatirma +1
             mainData = allData.iloc[i]
 
             for j in range(len(allData)):
@@ -138,7 +140,7 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                                     break
                             if(boolean_value):
                                 for index in range(len(rootCompareDatas)):
-                                    print(f"Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
+                                    print(f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
                                     
                                 print('-'*100)
                      
@@ -270,6 +272,7 @@ def setUltimateThreadIndex(indexArea, sayi, divison, list1,list2,list3,rate_scor
         thread.start()
     
 def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, process, newDivison):
+    kacinci = 0
     complaintId = ""
     spesifik = ""
     if list1[0] != "nothing":
@@ -287,7 +290,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
 
           
         for i in range(baslangic, indexArea):
-
+            kacinci=kacinci+1
             mainData = allData.iloc[i]
             
             if mainData["Complaint ID"].strip() == complaintId.strip():
@@ -325,13 +328,14 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                                     break
                             if(boolean_value):
                                 for index in range(len(rootCompareDatas)):
-                                    print(f"Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
+                                    print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
                                     
                                 print('-'*100)
 
     # genel Durum
     else:
         for i in range(baslangic, indexArea):
+            kacinci=kacinci+1
             mainData = allData.iloc[i]
 
             for j in range(len(allData)):
@@ -377,7 +381,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                                     break
                             if(boolean_value):
                                 for index in range(len(rootCompareDatas)):
-                                    print(f"Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
+                                    print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
                                     
                                 print('-'*100)
 
@@ -392,12 +396,12 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
 
 
 
-# setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
+setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
 
 
-if __name__ == "__main__": 
-    #setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
-    setUltimateProcessIndex(40, ['Aynı Product'],['Issue','Company'],['Company'],20)
+# if __name__ == "__main__": 
+#     setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
+#     setUltimateProcessIndex(10, ['Aynı Product'],['Issue'],['Company'],0)
     
 
 
