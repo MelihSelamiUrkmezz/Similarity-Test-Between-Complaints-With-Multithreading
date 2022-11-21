@@ -4187,7 +4187,7 @@ import multiprocessing as mp
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
-    allData = pd.read_csv(r"C:\Users\melih\Desktop\Github\Similarity-Test-Between-Complaints-With-Multithreading\all_data\clean_data.csv", encoding='latin1')
+    allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
     allData=allData.head(50)
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -4610,7 +4610,7 @@ class Ui_MainWindow(object):
                     
                     if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                         
-                        self.setThreadIndex(threadCount=thread_count_s,list1=columns1,list2=columns2,list3=columns3,rate=smilarity_rating)
+                        self.setUltimateProcessIndex(threadCount=thread_count_s,list1=columns1,list2=columns2,list3=columns3,rate=smilarity_rating)
                        
                     else:
                         self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
@@ -4622,7 +4622,7 @@ class Ui_MainWindow(object):
                 
                 if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                     
-                      self.setThreadIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))            
+                      self.setUltimateProcessIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))            
                     
                 else:
                     self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
@@ -4819,7 +4819,11 @@ class Ui_MainWindow(object):
     def setUltimateProcessIndex(self,threadCount, list1, list2, list3, rate):
         selectedData = self.allData
 
-        divison = int(len(selectedData) / 10)
+        processCount = 10
+        if threadCount<10:
+            processCount = threadCount
+
+        divison = int(len(selectedData) / processCount)
         
         pieceValues = []
         temp = divison
@@ -4834,10 +4838,12 @@ class Ui_MainWindow(object):
         
         # 10 tane process olusturulucak icersine de threadler yerlestirilicek
         processes = []
-        willCrateThreadCount = int(threadCount/10)
-        remaningThreadCount = threadCount%10
+        willCrateThreadCount = int(threadCount/processCount)
+        remaningThreadCount = threadCount%processCount
+
         
-        for i in range(10):
+        
+        for i in range(processCount):
             
             if remaningThreadCount != 0:
                 processes.append(mp.Process(target=self.setUltimateThreadIndex, args=(pieceValues[i], i, divison, list1,list2,list3,rate,willCrateThreadCount+1,threadCount)))
@@ -4895,7 +4901,7 @@ class Ui_MainWindow(object):
         if list1[0] != "nothing":
             if len(list1)>1:
                 complaintId = list1[1].strip()
-            spesifik = list1[0].strip().split(' ')[1]
+            spesifik = list1[0].strip().split(' ')[1:]
         
         rootCompareDatas = list2
         showingCompareDatas = list3
@@ -4936,20 +4942,23 @@ class Ui_MainWindow(object):
                                 rootList.append(rootData)
 
                         if(flag):
+                            showData = []
+                            
                             for show in showingCompareDatas:
-                                showData = testData[show]
-                                boolean_value=True
-                                for x in rate_list:
-                                    if(x<rate_score):
-                                        boolean_value=False
-                                        break
-                                if(boolean_value):
-                                    for index in range(len(rootCompareDatas)):
-                                        result_string=f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
-                                        QtWidgets.QListWidgetItem(result_string,self.resultstable)
-                                    print('-'*100)
+                                showData.append(f'{show} = {testData[show]}')
+                            boolean_value=True
+                            for x in rate_list:
+                                if(x<rate_score):
+                                    boolean_value=False
+                                    break
+                            if(boolean_value):
+                                
+                                result_String=f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}"
+                                QtWidgets.QListWidgetItem(result_String,self.resultstable) 
 
         # genel Durum
+      
+        
         else:
             for i in range(baslangic, indexArea):
                 kacinci=kacinci+1
@@ -4989,18 +4998,20 @@ class Ui_MainWindow(object):
                                 
                                 
                     if(flag):
-                            for show in showingCompareDatas:
-                                showData = testData[show]
-                                boolean_value=True
-                                for x in rate_list:
-                                    if(x<rate_score):
-                                        boolean_value=False
-                                        break
-                                if(boolean_value):
-                                    for index in range(len(rootCompareDatas)):
-                                        result_string=f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
-                                        QtWidgets.QListWidgetItem(result_string,self.resultstable)
-                                    print('-'*100)
+                        showData = []
+                        
+                        for show in showingCompareDatas:
+                            showData.append(f'{show} = {testData[show]}')
+                        boolean_value=True
+                        for x in rate_list:
+                            if(x<rate_score):
+                                boolean_value=False
+                                break
+                        if(boolean_value):
+                            
+                            result_String=f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}"
+                            QtWidgets.QListWidgetItem(result_String,self.resultstable) 
+                            
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)

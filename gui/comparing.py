@@ -6,7 +6,7 @@ import multiprocessing as mp
 # kodun yazılacagı yer
 
 # get Data
-allData = pd.read_csv(r"C:\Users\melih\Desktop\Github\Similarity-Test-Between-Complaints-With-Multithreading\all_data\clean_data.csv", encoding='latin1')
+allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 
 allData=allData.head(50)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
@@ -201,7 +201,11 @@ def setThreadIndex(threadCount, list1, list2, list3, rate):
 def setUltimateProcessIndex(threadCount, list1, list2, list3, rate):
     selectedData = allData
 
-    divison = int(len(selectedData) / 10)
+    processCount = 10
+    if threadCount<10:
+        processCount = threadCount
+
+    divison = int(len(selectedData) / processCount)
     
     pieceValues = []
     temp = divison
@@ -216,10 +220,12 @@ def setUltimateProcessIndex(threadCount, list1, list2, list3, rate):
      
     # 10 tane process olusturulucak icersine de threadler yerlestirilicek
     processes = []
-    willCrateThreadCount = int(threadCount/10)
-    remaningThreadCount = threadCount%10
+    willCrateThreadCount = int(threadCount/processCount)
+    remaningThreadCount = threadCount%processCount
+
     
-    for i in range(10):
+    
+    for i in range(processCount):
         
         if remaningThreadCount != 0:
             processes.append(mp.Process(target=setUltimateThreadIndex, args=(pieceValues[i], i, divison, list1,list2,list3,rate,willCrateThreadCount+1,threadCount)))
@@ -233,7 +239,7 @@ def setUltimateProcessIndex(threadCount, list1, list2, list3, rate):
 
 def setUltimateThreadIndex(indexArea, sayi, divison, list1,list2,list3,rate_score,threadCount, realThreadCount):
     # burası subthread olusturma mantıgını tasıyor
-    artan = realThreadCount%10
+    
     
     # subThreadlere gelecek parcalamalar
     newDivison = int((divison) / threadCount)
@@ -277,7 +283,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
     if list1[0] != "nothing":
         if len(list1)>1:
             complaintId = list1[1].strip()
-        spesifik = list1[0].strip().split(' ')[1]
+        spesifik = list1[0].strip().split(' ')[1:]
     
     rootCompareDatas = list2
     showingCompareDatas = list3
@@ -318,17 +324,21 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                             rootList.append(rootData)
 
                     if(flag):
+                        showData = []
+                        
                         for show in showingCompareDatas:
-                            showData = testData[show]
-                            boolean_value=True
-                            for x in rate_list:
-                                if(x<rate_score):
-                                    boolean_value=False
-                                    break
-                            if(boolean_value):
-                                for index in range(len(rootCompareDatas)):
-                                    print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
-                                print('-'*100)
+                            showData.append(f'{show} = {testData[show]}')
+                        boolean_value=True
+                        for x in rate_list:
+                            if(x<rate_score):
+                                boolean_value=False
+                                break
+                        if(boolean_value):
+                            
+
+                            print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                                
+                            print('-'*100)
 
     # genel Durum
     else:
@@ -367,21 +377,24 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                             rootList.append(rootData)
 
                             
-                            
+                       
                             
                 if(flag):
+                        showData = []
+                        
                         for show in showingCompareDatas:
-                            showData = testData[show]
-                            boolean_value=True
-                            for x in rate_list:
-                                if(x<rate_score):
-                                    boolean_value=False
-                                    break
-                            if(boolean_value):
-                                for index in range(len(rootCompareDatas)):
-                                    print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
-                                    
-                                print('-'*100)
+                            showData.append(f'{show} = {testData[show]}')
+                        boolean_value=True
+                        for x in rate_list:
+                            if(x<rate_score):
+                                boolean_value=False
+                                break
+                        if(boolean_value):
+                            
+
+                            print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                                
+                            print('-'*100)
 
 
 
@@ -391,12 +404,12 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
     # for i in range(indexArea-divison, indexArea):
 
 
-setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
+# setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
 
 
-# if __name__ == "__main__": 
-#     setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
-#     setUltimateProcessIndex(10, ['Aynı Product'],['Issue'],['Company'],0)
+if __name__ == "__main__": 
+    # setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
+    setUltimateProcessIndex(10, ['Aynı Company'],['Issue','Product'],['Company','Product'],0)
     
 
 
