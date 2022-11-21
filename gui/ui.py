@@ -4504,7 +4504,7 @@ class Ui_MainWindow(object):
         self.smilar_issue.setText(_translate("MainWindow", "Aynı Issue"))
         self.smilar_company.setText(_translate("MainWindow", "Aynı Company"))
         self.smilar_state.setText(_translate("MainWindow", "Aynı State"))
-        self.smilar_zipcode.setText(_translate("MainWindow", "Aynı ZIP code"))
+        self.smilar_zipcode.setText(_translate("MainWindow", "Aynı ZIPcode"))
         self.smilar_noting.setText(_translate("MainWindow", "İstemiyorum"))
         self.spec_complaintid.setText(_translate("MainWindow", "Spesifik ComplaintID"))
         self.label_3.setText(_translate("MainWindow", "Spesifik bir koşul seçiniz:"))
@@ -4513,13 +4513,13 @@ class Ui_MainWindow(object):
         self.compare_issue.setText(_translate("MainWindow", "Issue"))
         self.compare_state.setText(_translate("MainWindow", "State"))
         self.compare_company.setText(_translate("MainWindow", "Company"))
-        self.compare_zipcode.setText(_translate("MainWindow", "ZIP code"))
+        self.compare_zipcode.setText(_translate("MainWindow", "ZIPcode"))
         self.view_prod.setText(_translate("MainWindow", "Product"))
         self.view_issue.setText(_translate("MainWindow", "Issue"))
         self.view_state.setText(_translate("MainWindow", "State"))
         self.view_company.setText(_translate("MainWindow", "Company"))
         self.view_complaintid.setText(_translate("MainWindow", "ComplaintID"))
-        self.view_zipcode.setText(_translate("MainWindow", "ZIP code"))
+        self.view_zipcode.setText(_translate("MainWindow", "ZIPcode"))
         self.views_all.setText(_translate("MainWindow", "Hepsi"))
         self.label_5.setText(_translate("MainWindow", "Görüntülenecek sütunları seçiniz:"))
         self.label_6.setText(_translate("MainWindow", "Kaç thread ile çalışılacağını giriniz:"))
@@ -4610,7 +4610,7 @@ class Ui_MainWindow(object):
                     
                     if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                         
-                        self.setUltimateProcessIndex(threadCount=thread_count_s,list1=columns1,list2=columns2,list3=columns3,rate=smilarity_rating)
+                        self.setThreadIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))
                        
                     else:
                         self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
@@ -4622,7 +4622,7 @@ class Ui_MainWindow(object):
                 
                 if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                     
-                      self.setUltimateProcessIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))            
+                      self.setThreadIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))            
                     
                 else:
                     self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
@@ -4667,7 +4667,7 @@ class Ui_MainWindow(object):
 
                 mainData = self.allData.iloc[i]
                 
-                if mainData["Complaint ID"].strip() == complaintId.strip():
+                if str(mainData["ComplaintID"]).strip() == complaintId.strip():
 
                     
 
@@ -4678,12 +4678,12 @@ class Ui_MainWindow(object):
                         targetList = []
                         flag = False
                         for item in rootCompareDatas:
-                            rootData = mainData[item]
+                            rootData = str(mainData[item])
                             pieceOfRootData = rootData.strip().split(' ')
                         
                             if i!=j:
                                 testData = self.allData.iloc[j]
-                                targetData = testData[item]
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 
                                 rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
@@ -4692,20 +4692,36 @@ class Ui_MainWindow(object):
                                 targetList.append(targetData)
                                 rootList.append(rootData)
 
+
+
                         if(flag):
+                            showData = []
+                            
                             for show in showingCompareDatas:
-                                showData = testData[show]
-                                boolean_value=True
-                                for x in rate_list:
-                                    if(x<rate_score):
-                                        boolean_value=False
-                                        break
-                                if(boolean_value):
-                                    for index in range(len(rootCompareDatas)):
-                                        result_string=f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
-                                        QtWidgets.QListWidgetItem(result_string,self.resultstable)
+                                showData.append(f'{show} = {str(testData[show])}')
+                            boolean_value=True
+                            for x in rate_list:
+                                if(x<rate_score):
+                                    boolean_value=False
+                                    break
+                            if(boolean_value):
+                                
+                                result_String=f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}"
+                                QtWidgets.QListWidgetItem(result_String,self.resultstable)
+                        # if(flag):
+                        #     for show in showingCompareDatas:
+                        #         showData = str(testData[show])
+                        #         boolean_value=True
+                        #         for x in rate_list:
+                        #             if(x<rate_score):
+                        #                 boolean_value=False
+                        #                 break
+                        #         if(boolean_value):
+                        #             for index in range(len(rootCompareDatas)):
+                        #                 result_string=f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
+                        #                 QtWidgets.QListWidgetItem(result_string,self.resultstable)
                                         
-                                    print('-'*100)
+                        #             print('-'*100)
 
         # genel Durum
         else:
@@ -4719,15 +4735,15 @@ class Ui_MainWindow(object):
                     targetList = []
                     flag = False
                     for item in rootCompareDatas:
-                        rootData = mainData[item]
+                        rootData = str(mainData[item])
                         pieceOfRootData = rootData.strip().split(' ')
 
                         if j!=i:
                             testData = self.allData.iloc[j]
 
                             if len(spesifik)>0:
-                                if mainData[spesifik].strip() == testData[spesifik].strip():
-                                    targetData = testData[item]
+                                if str(mainData[spesifik]).strip() == str(testData[spesifik]).strip():
+                                    targetData = str(testData[item])
                                     pieceOfTargetData = targetData.strip().split(' ')
                                     rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                     rate_list.append(rate)
@@ -4735,7 +4751,7 @@ class Ui_MainWindow(object):
                                     targetList.append(targetData)
                                     rootList.append(rootData)
                             else:
-                                targetData = testData[item]
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                 rate_list.append(rate)
@@ -4744,22 +4760,35 @@ class Ui_MainWindow(object):
                                 rootList.append(rootData)
 
                                 
-                                
+                    # if(flag):
+                        #     for show in showingCompareDatas:
+                        #         showData = str(testData[show])
+                        #         boolean_value=True
+                        #         for x in rate_list:
+                        #             if(x<rate_score):
+                        #                 boolean_value=False
+                        #                 break
+                        #         if(boolean_value):
+                        #             for index in range(len(rootCompareDatas)):
+                        #                 result_string=f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
+                        #                 QtWidgets.QListWidgetItem(result_string,self.resultstable)
+                                        
+                        #             print('-'*100)            
                                 
                     if(flag):
+                            showData = []
+                            
                             for show in showingCompareDatas:
-                                showData = testData[show]
-                                boolean_value=True
-                                for x in rate_list:
-                                    if(x<rate_score):
-                                        boolean_value=False
-                                        break
-                                if(boolean_value):
-                                    for index in range(len(rootCompareDatas)):
-                                       result_string=f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}"
-                                       QtWidgets.QListWidgetItem(result_string,self.resultstable)
-                                        
-                                    print('-'*100)
+                                showData.append(f'{show} = {str(testData[show])}')
+                            boolean_value=True
+                            for x in rate_list:
+                                if(x<rate_score):
+                                    boolean_value=False
+                                    break
+                            if(boolean_value):
+                                
+                                result_String=f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}"
+                                QtWidgets.QListWidgetItem(result_String,self.resultstable)
 
     def setProcessIndex(self,threadCount, list1, list2, list3,rate):
     
@@ -4916,7 +4945,7 @@ class Ui_MainWindow(object):
                 kacinci=kacinci+1
                 mainData = self.allData.iloc[i]
                 
-                if mainData["Complaint ID"].strip() == complaintId.strip():
+                if str(mainData["ComplaintID"]).strip() == complaintId.strip():
 
                     
 
@@ -4927,12 +4956,12 @@ class Ui_MainWindow(object):
                         targetList = []
                         flag = False
                         for item in rootCompareDatas:
-                            rootData = mainData[item]
+                            rootData = str(mainData[item])
                             pieceOfRootData = rootData.strip().split(' ')
                         
                             if i!=j:
                                 testData = self.allData.iloc[j]
-                                targetData = testData[item]
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 
                                 rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
@@ -4945,7 +4974,7 @@ class Ui_MainWindow(object):
                             showData = []
                             
                             for show in showingCompareDatas:
-                                showData.append(f'{show} = {testData[show]}')
+                                showData.append(f'{show} = {str(testData[show])}')
                             boolean_value=True
                             for x in rate_list:
                                 if(x<rate_score):
@@ -4970,15 +4999,15 @@ class Ui_MainWindow(object):
                     targetList = []
                     flag = False
                     for item in rootCompareDatas:
-                        rootData = mainData[item]
+                        rootData = str(mainData[item])
                         pieceOfRootData = rootData.strip().split(' ')
 
                         if j!=i:
                             testData = self.allData.iloc[j]
 
                             if len(spesifik)>0:
-                                if mainData[spesifik].strip() == testData[spesifik].strip():
-                                    targetData = testData[item]
+                                if str(mainData[spesifik]).strip() == str(testData[spesifik]).strip():
+                                    targetData = str(testData[item])
                                     pieceOfTargetData = targetData.strip().split(' ')
                                     rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                     rate_list.append(rate)
@@ -4986,7 +5015,7 @@ class Ui_MainWindow(object):
                                     targetList.append(targetData)
                                     rootList.append(rootData)
                             else:
-                                targetData = testData[item]
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 rate = self.compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                 rate_list.append(rate)
@@ -5001,7 +5030,7 @@ class Ui_MainWindow(object):
                         showData = []
                         
                         for show in showingCompareDatas:
-                            showData.append(f'{show} = {testData[show]}')
+                            showData.append(f'{show} = {str(testData[show])}')
                         boolean_value=True
                         for x in rate_list:
                             if(x<rate_score):

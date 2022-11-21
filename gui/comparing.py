@@ -8,7 +8,7 @@ import multiprocessing as mp
 # get Data
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 
-allData=allData.head(50)
+allData=allData.head(500)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareAlgorithm(pieceRoot, pieceTarget):
@@ -33,6 +33,7 @@ def compareAlgorithm(pieceRoot, pieceTarget):
     return result
 
 def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
+    start = time.time()
     karsilatirma = 0
     complaintId = ""
     spesifik = ""
@@ -51,7 +52,7 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
 
             mainData = allData.iloc[i]
             
-            if mainData["Complaint ID"].strip() == complaintId.strip():
+            if str(mainData["ComplaintID"]).strip() == complaintId.strip():
 
                 
 
@@ -62,12 +63,12 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                     targetList = []
                     flag = False
                     for item in rootCompareDatas:
-                        rootData = mainData[item]
+                        rootData = str(mainData[item])
                         pieceOfRootData = rootData.strip().split(' ')
                     
                         if i!=j:
                             testData = allData.iloc[j]
-                            targetData = testData[item]
+                            targetData = str(testData[item])
                             pieceOfTargetData = targetData.strip().split(' ')
                             
                             rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
@@ -75,20 +76,37 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                             flag = True
                             targetList.append(targetData)
                             rootList.append(rootData)
+                    
 
                     if(flag):
+                        showData = []
+                        
                         for show in showingCompareDatas:
-                            showData = testData[show]
-                            boolean_value=True
-                            for x in rate_list:
-                                if(x<rate_score):
-                                    boolean_value=False
-                                    break
-                            if(boolean_value):
-                                for index in range(len(rootCompareDatas)):
-                                    print(f"Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
+                            showData.append(f'{show} = {str(testData[show])}')
+                        boolean_value=True
+                        for x in rate_list:
+                            if(x<rate_score):
+                                boolean_value=False
+                                break
+                        if(boolean_value):
+                            
+
+                            print(f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                                
+                            print('-'*100)
+                    # if(flag):
+                    #     for show in showingCompareDatas:
+                    #         showData = str(testData[show])
+                    #         boolean_value=True
+                    #         for x in rate_list:
+                    #             if(x<rate_score):
+                    #                 boolean_value=False
+                    #                 break
+                    #         if(boolean_value):
+                    #             for index in range(len(rootCompareDatas)):
+                    #                 print(f"Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
                                     
-                                print('-'*100)
+                    #             print('-'*100)
 
     # genel Durum
     else:
@@ -102,15 +120,18 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                 targetList = []
                 flag = False
                 for item in rootCompareDatas:
-                    rootData = mainData[item]
+                    rootData = str(mainData[item])
                     pieceOfRootData = rootData.strip().split(' ')
 
                     if j!=i:
                         testData = allData.iloc[j]
 
                         if len(spesifik)>0:
-                            if mainData[spesifik].strip() == testData[spesifik].strip():
-                                targetData = testData[item]
+                            if str(mainData[spesifik]).strip() == str(testData[spesifik]).strip():
+                               
+                               
+                                
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                 rate_list.append(rate)
@@ -118,7 +139,7 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                                 targetList.append(targetData)
                                 rootList.append(rootData)
                         else:
-                            targetData = testData[item]
+                            targetData = str(testData[item])
                             pieceOfTargetData = targetData.strip().split(' ')
                             rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                             rate_list.append(rate)
@@ -127,21 +148,39 @@ def compareOfCol(indexArea, sayi, divison, list1,list2,list3,rate_score):
                             rootList.append(rootData)
 
                             
-                            
-                            
                 if(flag):
+                        showData = []
+                        
                         for show in showingCompareDatas:
-                            showData = testData[show]
-                            boolean_value=True
-                            for x in rate_list:
-                                if(x<rate_score):
-                                    boolean_value=False
-                                    break
-                            if(boolean_value):
-                                for index in range(len(rootCompareDatas)):
-                                    print(f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
+                            showData.append(f'{show} = {str(testData[show])}')
+                        boolean_value=True
+                        for x in rate_list:
+                            if(x<rate_score):
+                                boolean_value=False
+                                break
+                        if(boolean_value):
+                            
+
+                            print(f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                                
+                            print('-'*100)            
+                            
+                # if(flag):
+                #         for show in showingCompareDatas:
+                #             showData = str(testData[show])
+                #             boolean_value=True
+                #             for x in rate_list:
+                #                 if(x<rate_score):
+                #                     boolean_value=False
+                #                     break
+                #             if(boolean_value):
+                #                 for index in range(len(rootCompareDatas)):
+                #                     print(f"{karsilatirma}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
                                     
-                                print('-'*100)
+                #                 print('-'*100)
+    end = time.time()
+
+    print(f"{sayi} -) Threadin Calisma Süresi {end-start}")
                      
 def setProcessIndex(threadCount, list1, list2, list3,rate):
     
@@ -283,7 +322,8 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
     if list1[0] != "nothing":
         if len(list1)>1:
             complaintId = list1[1].strip()
-        spesifik = list1[0].strip().split(' ')[1:]
+        spesifik = list1[0].strip().split(' ')[1].strip()
+            
     
     rootCompareDatas = list2
     showingCompareDatas = list3
@@ -298,7 +338,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
             kacinci=kacinci+1
             mainData = allData.iloc[i]
             
-            if mainData["Complaint ID"].strip() == complaintId.strip():
+            if str(mainData["ComplaintID"]).strip() == complaintId.strip():
 
                 
 
@@ -309,12 +349,12 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                     targetList = []
                     flag = False
                     for item in rootCompareDatas:
-                        rootData = mainData[item]
+                        rootData = str(mainData[item])
                         pieceOfRootData = rootData.strip().split(' ')
                     
                         if i!=j:
                             testData = allData.iloc[j]
-                            targetData = testData[item]
+                            targetData = str(testData[item])
                             pieceOfTargetData = targetData.strip().split(' ')
                             
                             rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
@@ -327,7 +367,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                         showData = []
                         
                         for show in showingCompareDatas:
-                            showData.append(f'{show} = {testData[show]}')
+                            showData.append(f'{show} = {str(testData[show])}')
                         boolean_value=True
                         for x in rate_list:
                             if(x<rate_score):
@@ -352,15 +392,17 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                 targetList = []
                 flag = False
                 for item in rootCompareDatas:
-                    rootData = mainData[item]
+                    rootData = str(mainData[item])
                     pieceOfRootData = rootData.strip().split(' ')
 
                     if j!=i:
                         testData = allData.iloc[j]
 
                         if len(spesifik)>0:
-                            if mainData[spesifik].strip() == testData[spesifik].strip():
-                                targetData = testData[item]
+                            
+                            if str(mainData[spesifik]).strip() == str(testData[spesifik]).strip():
+                                
+                                targetData = str(testData[item])
                                 pieceOfTargetData = targetData.strip().split(' ')
                                 rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                                 rate_list.append(rate)
@@ -368,7 +410,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                                 targetList.append(targetData)
                                 rootList.append(rootData)
                         else:
-                            targetData = testData[item]
+                            targetData = str(testData[item])
                             pieceOfTargetData = targetData.strip().split(' ')
                             rate = compareAlgorithm(pieceRoot=pieceOfRootData, pieceTarget=pieceOfTargetData)
                             rate_list.append(rate)
@@ -383,7 +425,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                         showData = []
                         
                         for show in showingCompareDatas:
-                            showData.append(f'{show} = {testData[show]}')
+                            showData.append(f'{show} = {str(testData[show])}')
                         boolean_value=True
                         for x in rate_list:
                             if(x<rate_score):
@@ -403,13 +445,15 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
     # Bu Kod bana calisma araligini vericek
     # for i in range(indexArea-divison, indexArea):
 
+a = time.time()
+setThreadIndex(40, ['nothing'],['ZIPcode'],['Company'],2000) 
+b = time.time()
+print("Toplam calisma süresi " + str(b-a))
 
-# setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
 
-
-if __name__ == "__main__": 
-    # setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
-    setUltimateProcessIndex(10, ['Aynı Company'],['Issue','Product'],['Company','Product'],0)
+# if __name__ == "__main__": 
+#     # setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
+#     setUltimateProcessIndex(10, ['Aynı ZIPcode'],['Issue','Product'],['Company','Product'],0)
     
 
 
