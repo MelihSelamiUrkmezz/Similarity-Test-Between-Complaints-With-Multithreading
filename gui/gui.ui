@@ -428,22 +428,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QCheckBox" name="views_all">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(255, 255, 255)</string>
-       </property>
-       <property name="text">
-        <string>Hepsi</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="label_5">

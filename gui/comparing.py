@@ -5,9 +5,8 @@ import multiprocessing as mp
 
 # kodun yazılacagı yer
 
-
 # get Data
-allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
+allData = pd.read_csv(r"C:\Users\melih\Desktop\Github\Similarity-Test-Between-Complaints-With-Multithreading\all_data\clean_data.csv", encoding='latin1')
 
 allData=allData.head(50)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
@@ -329,7 +328,6 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                             if(boolean_value):
                                 for index in range(len(rootCompareDatas)):
                                     print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas[index]} | RootData : {rootList[index]} | TargetData: {targetList[index]} | Rate:{rate_list[index]} | ShowData {showData}")
-                                    
                                 print('-'*100)
 
     # genel Durum
@@ -391,9 +389,6 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
 
     # Bu Kod bana calisma araligini vericek
     # for i in range(indexArea-divison, indexArea):
-
-
-
 
 
 setThreadIndex(1, ['Aynı Product'],['Issue'],['Company'],20) 
