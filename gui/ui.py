@@ -4187,8 +4187,9 @@ import multiprocessing as mp
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
-    allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
-    allData=allData.head(50)
+    allData = pd.read_csv(r"C:\Users\melih\Desktop\Github\Similarity-Test-Between-Complaints-With-Multithreading\all_data\clean_data.csv", encoding='latin1')
+    allData=allData.head(1000)
+    all_thread_times=[]
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1121, 862)
@@ -4530,6 +4531,7 @@ class Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "Sonuçlar"))
 
     def validate_button_click(self):
+        ui_time=time.time()
         columns1=list()
         columns2=list()
         columns3=list()
@@ -4611,6 +4613,11 @@ class Ui_MainWindow(object):
                     if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                         
                         self.setThreadIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))
+                        average=0
+                        if(len(self.all_thread_times)>0):
+                            for x in self.all_thread_times:
+                                average+=float(x)
+                            self.thread_time.setText(str(average/len(self.all_thread_times)))
                        
                     else:
                         self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
@@ -4623,10 +4630,16 @@ class Ui_MainWindow(object):
                 if(thread_count_s.isnumeric() and smilarity_rating.isnumeric()):
                     
                       self.setThreadIndex(threadCount=int(thread_count_s),list1=columns1,list2=columns2,list3=columns3,rate=float(smilarity_rating))            
-                    
+                      average=0
+                      if(len(self.all_thread_times)>0):
+                        for x in self.all_thread_times:
+                                average+=float(x)
+                        self.thread_time.setText(str(average/len(self.all_thread_times)))
                 else:
                     self.problem_text.setText('Thread sayısı veya benzerlik oranı sayısal değer olmalıdır.')
-    
+        ui_end_time=time.time()
+        self.program_time.setText(str(ui_end_time*60-ui_time*60))
+              
     def compareAlgorithm(self,pieceRoot, pieceTarget):
 
         maxLength = len(pieceRoot)
@@ -4649,6 +4662,7 @@ class Ui_MainWindow(object):
         return result
 
     def compareOfCol(self,indexArea, sayi, divison, list1,list2,list3,rate_score):
+        start_time=time.time()
         karsilatirma = 0
         complaintId = ""
         spesifik = ""
@@ -4789,7 +4803,9 @@ class Ui_MainWindow(object):
                                 
                                 result_String=f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}"
                                 QtWidgets.QListWidgetItem(result_String,self.resultstable)
-
+        end_time=time.time()
+        self.all_thread_times.append(end_time*60-start_time*60)
+        
     def setProcessIndex(self,threadCount, list1, list2, list3,rate):
     
         selectedData = self.allData
