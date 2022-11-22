@@ -8,7 +8,7 @@ import multiprocessing as mp
 # get Data
 allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\clean_data.csv", encoding='latin1')
 
-allData=allData.head(500)
+allData=allData.head(50)
 # allData = pd.read_csv(r"C:\Users\ASUS Pc\Desktop\VSCodeProject\yazlab12\deneme.csv", encoding='utf8')
 
 def compareAlgorithm(pieceRoot, pieceTarget):
@@ -376,7 +376,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                         if(boolean_value):
                             
 
-                            print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                            print(f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
                                 
                             print('-'*100)
 
@@ -434,7 +434,7 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
                         if(boolean_value):
                             
 
-                            print(f"{kacinci}-) Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
+                            print(f"Karsilatirma nesnesi : {rootCompareDatas} | RootData : {rootList} | TargetData: {targetList} | Rate:{rate_list} | ShowData {showData}")
                                 
                             print('-'*100)
 
@@ -445,15 +445,15 @@ def compareOfCol2(indexArea, sayi, divison, list1,list2,list3,rate_score, proces
     # Bu Kod bana calisma araligini vericek
     # for i in range(indexArea-divison, indexArea):
 
-a = time.time()
-setThreadIndex(40, ['nothing'],['ZIPcode'],['Company'],2000) 
-b = time.time()
-print("Toplam calisma süresi " + str(b-a))
+# a = time.time()
+# setThreadIndex(50, ['nothing'],['ZIPcode'],['ComplaintID'],0) 
+# b = time.time()
+# print("Toplam calisma süresi " + str(b-a))
 
 
-# if __name__ == "__main__": 
-#     # setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
-#     setUltimateProcessIndex(10, ['Aynı ZIPcode'],['Issue','Product'],['Company','Product'],0)
+if __name__ == "__main__": 
+    # setProcessIndex(1, ['Aynı Product'],['Issue'],['Company'],20)
+    setUltimateProcessIndex(10, ['Spesifik Complaint Id','3238275'],['Issue','Product'],['ComplaintID'],0)
     
 
 
